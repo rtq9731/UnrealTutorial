@@ -9,10 +9,13 @@ AFPSProjectile::AFPSProjectile()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+
 	InitialLifeSpan = 3.0f; // 3초 후에 삭제
 
 	// 구체를 단순 콜리전 표현으로 사용합니다.
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
+	CollisionComponent->BodyInstance.SetCollisionProfileName(TEXT("Projectile"));
+
 	// 구체의 콜리전 반경을 설정합니다.
 	CollisionComponent->InitSphereRadius(15.0f);
 	// 루트 컴포넌트를 콜리전 컴포넌트로 설정합니다.
