@@ -13,12 +13,11 @@ class CPPQUICKSTART_API ACameraDirector : public AActor
 	
 public:	
 	UPROPERTY(EditAnywhere)
-		AActor* cameraOne;
-
-	UPROPERTY(EditAnywhere)
-		AActor* cameraTwo;
+		TArray<AActor*> cameras;
 
 	float TimeToNextCameraChange;
+
+	int curCamera;
 
 	// Sets default values for this actor's properties
 	ACameraDirector();

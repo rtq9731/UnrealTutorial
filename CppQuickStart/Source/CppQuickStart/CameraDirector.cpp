@@ -8,7 +8,7 @@ ACameraDirector::ACameraDirector()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	curCamera = 0;
 }
 
 // Called when the game starts or when spawned
@@ -23,7 +23,6 @@ void ACameraDirector::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
 	const float TimeBetweenCameraChanges = 2.0f;
 	const float SmoothBlendTime = 0.75f;
 
@@ -35,13 +34,11 @@ void ACameraDirector::Tick(float DeltaTime)
 		APlayerController* ourPlayerController = UGameplayStatics::GetPlayerController(this, 0);
 		if (ourPlayerController)
 		{
-			if (ourPlayerController->GetViewTarget() != cameraOne && cameraOne != nullptr)
+			curCamera ++;
+			int realCamNum = curCamera % cameras.Num();
+			if (ourPlayerController->GetViewTarget() != cameras[realCamNum] && cameras[realCamNum] != nullptr)
 			{
-				ourPlayerController->SetViewTarget(cameraOne); // 즉시 카메라 1으로 이동
-			}
-			else
-			{
-				ourPlayerController->SetViewTargetWithBlend(cameraTwo, SmoothBlendTime);
+				ourPlayerController->SetViewTargetWithBlend(cameras[realCamNum], SmoothBlendTime);
 			}
 		}
 	}
