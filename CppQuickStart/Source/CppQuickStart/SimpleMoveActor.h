@@ -15,6 +15,7 @@ public:
 	// Sets default values for this actor's properties
 	ASimpleMoveActor();
 
+	// 움직이는 속도입니다.
 	UPROPERTY(EditAnywhere)
 		float moveSpeed;
 
