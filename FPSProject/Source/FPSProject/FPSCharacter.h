@@ -32,6 +32,12 @@ public:
 	UFUNCTION()
 		void MoveRight(float Value);
 
+	// 키를 누르면 점프 플래그 발생
+	UFUNCTION()
+		void StartJump();
 
+	// 키를 놓으면 점프 플래그 삭제
+	UFUNCTION()
+		void StopJump();
 
 };
