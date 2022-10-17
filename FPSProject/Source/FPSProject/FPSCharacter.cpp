@@ -40,6 +40,9 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFPSCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFPSCharacter::MoveRight);
 
+	// 付快胶 框流烙 备己
+	PlayerInputComponent->BindAxis("Turn", this, &AFPSCharacter::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &AFPSCharacter::AddControllerPitchInput);
 }
 
 void AFPSCharacter::MoveForward(float Value)
