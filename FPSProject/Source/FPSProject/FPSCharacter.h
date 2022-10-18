@@ -51,7 +51,7 @@ public:
 		USkeletalMeshComponent* FPSMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-		FVector muzzleOffset;
+		FVector MuzzleOffset;
 
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
 		TSubclassOf<class AFPSProjectile> ProjectileClass;

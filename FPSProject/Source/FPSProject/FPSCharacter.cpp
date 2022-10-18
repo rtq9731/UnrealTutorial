@@ -2,6 +2,7 @@
 
 
 #include "FPSCharacter.h"
+#include "FPSProjectile.h"
 
 // Sets default values
 AFPSCharacter::AFPSCharacter()
@@ -97,6 +98,35 @@ void AFPSCharacter::StopJump()
 
 void AFPSCharacter::FIre()
 {
+	// 만약 발사체가 지정되어있다면
+	if (ProjectileClass)
+	{
+		// 카메라 트랜스폼 구하기
+		FVector CameraLocation;
+		FRotator CameraRotation;
+		GetActorEyesViewPoint(CameraLocation, CameraRotation);
 
+		// MuzzleOffset을 카메라 스페이스에서 월드스페이스로 변환
+		FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
+		FRotator MuzzleRotation = CameraRotation;
+
+		// 조준을 약간 위쪽으로 올립니다
+		MuzzleRotation.Pitch += 10.0f;
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.Owner = this;
+			SpawnParams.Instigator = GetInstigator();
+
+			// 총구 위치에 발사체 소환
+			AFPSProjectile* Projectile = World->SpawnActor<AFPSProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, SpawnParams);
+			if (Projectile)
+			{
+				FVector LaunchDirection = MuzzleRotation.Vector();
+				Projectile->FireInDirection(LaunchDirection);
+			}
+		}
+	}
 }
 

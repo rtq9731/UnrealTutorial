@@ -17,11 +17,11 @@ public:
 	// Sets default values for this actor's properties
 	AFPSProjectile();
 
+	void FireInDirection(const FVector& ShootDir);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	void FireInDirection(const FVector& ShootDir);
 
 public:	
 	// Called every frame
