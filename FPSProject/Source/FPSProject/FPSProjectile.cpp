@@ -15,6 +15,14 @@ AFPSProjectile::AFPSProjectile()
 	CollisionCompnent->InitSphereRadius(15.0f);
 	// 루트 컴포넌트를 충돌 컴포넌트로 설정
 	RootComponent = CollisionCompnent;
+
+	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
+	ProjectileMovementComponent->SetUpdatedComponent(CollisionCompnent);
+	ProjectileMovementComponent->InitialSpeed = 3000.0f;
+	ProjectileMovementComponent->MaxSpeed = 3000.0f;
+	ProjectileMovementComponent->bRotationFollowsVelocity = true;
+	ProjectileMovementComponent->bShouldBounce = true;
+	ProjectileMovementComponent->Bounciness = 0.3f;
 }
 
 // Called when the game starts or when spawned
@@ -22,6 +30,11 @@ void AFPSProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void AFPSProjectile::FireInDirection(const FVector& ShootDir)
+{
+	ProjectileMovementComponent->Velocity = ShootDir * ProjectileMovementComponent->InitialSpeed;
 }
 
 // Called every frame
