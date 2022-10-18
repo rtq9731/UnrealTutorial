@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "FPSCharacter.generated.h"
 
 UCLASS()
@@ -47,7 +48,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* FPSCameraComponent;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = mesh)
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		USkeletalMeshComponent* FPSMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)

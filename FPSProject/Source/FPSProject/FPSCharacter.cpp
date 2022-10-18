@@ -13,7 +13,7 @@ AFPSCharacter::AFPSCharacter()
 	// 카메라를 생성해줍니다.
 	FPSCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	// 내 오브젝트에 카메라를 붙여줍니다
-	FPSCameraComponent->SetupAttachment(RootComponent);
+	FPSCameraComponent->SetupAttachment(GetCapsuleComponent());
 	// 카메라 위치를 눈 살짝 위쪽으로 잡습니다.
 	FPSCameraComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f + BaseEyeHeight));
 	// 폰의 카메라 로테이션 제어를 허용합니다.
@@ -22,7 +22,7 @@ AFPSCharacter::AFPSCharacter()
 	// FPS 메쉬 생성
 	FPSMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FirstPersonMesh"));
 	// 소유 플레이어만 이 메시를 볼 수 있게 합니다.
-	FPSMesh->bOnlyOwnerSee = true;
+	FPSMesh->SetOnlyOwnerSee(true);
 	// FPS 카메라에 팔 메시를 붙여요
 	FPSMesh->SetupAttachment(FPSCameraComponent);
 	// 그림자 일부를 꺼서 메시가 하나인것처럼 보여줍니다.
