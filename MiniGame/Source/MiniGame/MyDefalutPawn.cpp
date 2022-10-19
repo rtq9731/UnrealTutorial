@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "MyDefalutPawn.h"
@@ -16,14 +16,25 @@ void AMyDefalutPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PlayPawn->SetUpStartUI();
+	TArray<AActor*> ActorsToFind;
+	if (UWorld* World = GetWorld())
+	{
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATextManagerActor::StaticClass(), ActorsToFind);
+	}
 
-	UGameplayStatics::GetPlayerController(this, 0)->SetViewTarget(MainCam);
-	UGameplayStatics::GetPlayerController(this, 0)->SetPawn(this);
+	for (AActor* FireEffectActor : ActorsToFind)
+	{
+		//이 액터의 유형이 ATextManagerActor 클래스인지 여부입니다.
+		TextManager = Cast<ATextManagerActor>(FireEffectActor);
+		if (TextManager)
+		{
+			TextManager->SetUpStartUI();
+		}
+	}
+
+	TextManager->SetUpStartUI();
 
 	DealTimer = DealTime;
-
-	AnimInst = Cast<UCustomAnimInstance>(AnimInstMesh->FindComponentByClass<USkeletalMeshComponent>()->GetAnimInstance());
 }
 
 // Called every frame
@@ -46,7 +57,7 @@ void AMyDefalutPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void AMyDefalutPawn::OnTimerTick()
 {
 	DealTimer -= 0.01f;
-	PlayPawn->SetMsgText(FString::SanitizeFloat(FMath::Max(DealTimer, 0.0f)));
+	TextManager->SetMsgText(FString::SanitizeFloat(FMath::Max(DealTimer, 0.0f)));
 	if (DealTimer <= 0.0f)
 	{
 		GetWorldTimerManager().ClearTimer(TimerHandle);
@@ -57,7 +68,7 @@ void AMyDefalutPawn::OnTimerTick()
 void AMyDefalutPawn::OnTimerFinished()
 {
 	bIsOnGame = false;
-	PlayPawn->SetStateText(TEXT("Ready!"));
+	TextManager->SetStateText(TEXT("Ready!"));
 	DealTimer = DealTime;
 }
 
@@ -73,7 +84,7 @@ void AMyDefalutPawn::MakeRandAttackKey()
 		CurKey = "D";
 	}
 
-	PlayPawn->SetAttackText(CurKey);
+	TextManager->SetAttackText(CurKey);
 }
 
 void AMyDefalutPawn::CheckKey()
@@ -83,13 +94,8 @@ void AMyDefalutPawn::CheckKey()
 
 	const bool bIsAttack = CurInputKey == CurKey;
 
-	AnimInst->bIsAttack = bIsAttack;
-	AnimInst->bIsFailed = !bIsAttack;
-
-	if (bIsAttack)
-	{
-
-	}
+	TextManager->SetbIsAttack(bIsAttack);
+	TextManager->SetbIsAttack(!bIsAttack);
 }
 
 void AMyDefalutPawn::OnClickRight()
@@ -112,9 +118,7 @@ void AMyDefalutPawn::OnClickStart()
 	bIsOnGame = true;
 
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &AMyDefalutPawn::OnTimerTick, 0.01f, true);
-
-	AttackTextRenderer->SetVisibility(true);
-	MsgTextRenderer->SetText(FString::SanitizeFloat(FMath::Max(DealTimer, 0.0f)));
+	TextManager->SetUpGameUI(0.0f);
 
 	MakeRandAttackKey();
 }

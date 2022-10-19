@@ -29,17 +29,4 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void SetUpStartUI();
-	void SetStateText(FString str);
-	void SetAttackText(FString str);
-	void SetMsgText(FString str);
-
-	UPROPERTY(EditAnywhere)
-	UTextRenderComponent* StateTextRenderer;
-
-	UPROPERTY(EditAnywhere)
-	UTextRenderComponent* MsgTextRenderer;
-
-	UPROPERTY(EditAnywhere)
-	UTextRenderComponent* AttackTextRenderer;
 };

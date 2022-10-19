@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "PlayPawn.h"
+#include "TextManagerActor.h"
 #include "MyDefalutPawn.generated.h"
 
 UCLASS()
@@ -23,9 +23,6 @@ protected:
 	void CheckKey();
 	void OnTimerFinished();
 	void MakeRandAttackKey();
-
-	UFUNCTION()
-		void MyFunc();
 
 	UFUNCTION()
 		void OnClickRight();
@@ -57,14 +54,6 @@ public:
 
 	FTimerHandle TimerHandle;
 
-	UCustomAnimInstance* AnimInst;
-
 	UPROPERTY(EditAnywhere)
-		AActor* AnimInstMesh;
-
-	UPROPERTY(EditAnywhere)
-		AActor* MainCam;
-
-	UPROPERTY(EditAnywhere)
-		APlayPawn* PlayPawn;
+		ATextManagerActor* TextManager;
 };
