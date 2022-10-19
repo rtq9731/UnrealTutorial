@@ -29,30 +29,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION()
-		void OnClickRight();
-	UFUNCTION()
-		void OnClickLeft();
-	UFUNCTION()
-		void OnClickStart();
-	UFUNCTION()
-		void OnTimerTick();
-
-	void OnTimerFinished();
-	void CheckKey();
-	void MakeRandAttackKey();
-
-	UPROPERTY(EditAnywhere)
-		int DealTime = 3;
-
-	bool bIsOnGame = false;
-
-	FString CurInputKey = "";
-	FString CurKey = "";
-
-	FTimerHandle TimerHandle;
-
-	UCustomAnimInstance* AnimInst;
+	void SetUpStartUI();
+	void SetStateText(FString str);
+	void SetAttackText(FString str);
+	void SetMsgText(FString str);
 
 	UPROPERTY(EditAnywhere)
 	UTextRenderComponent* StateTextRenderer;
@@ -62,7 +42,4 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UTextRenderComponent* AttackTextRenderer;
-
-	UPROPERTY(EditAnywhere)
-	AActor* MainCam;
 };

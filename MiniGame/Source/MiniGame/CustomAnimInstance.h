@@ -16,6 +16,9 @@ class MINIGAME_API UCustomAnimInstance : public UAnimInstance
 	
 public:
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	bool bIsAttack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
+	bool bIsFailed;
 };
