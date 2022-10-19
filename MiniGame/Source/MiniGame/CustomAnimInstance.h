@@ -14,4 +14,8 @@ class MINIGAME_API UCustomAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 	
+public:
+
+	UPROPERTY()
+	bool bIsAttack;
 };
