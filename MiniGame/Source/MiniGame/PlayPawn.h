@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Components/TextRenderComponent.h"
 #include "CustomAnimInstance.h"
+#include "Kismet/GameplayStatics.h"
 #include "PlayPawn.generated.h"
 
 UCLASS()
@@ -32,11 +33,19 @@ public:
 		void OnClickRight();
 	UFUNCTION()
 		void OnClickLeft();
+	UFUNCTION()
+		void OnClickStart();
+	UFUNCTION()
+		void OnTimerTick();
 
+	void OnTimerFinished();
 	void CheckKey();
+	void MakeRandAttackKey();
 
 	UPROPERTY(EditAnywhere)
 		int DealTime = 3;
+
+	bool bIsOnGame = false;
 
 	FString CurInputKey = "";
 	FString CurKey = "";
@@ -44,5 +53,16 @@ public:
 	FTimerHandle TimerHandle;
 
 	UCustomAnimInstance* AnimInst;
-	UTextRenderComponent* TextRenderer;
+
+	UPROPERTY(EditAnywhere)
+	UTextRenderComponent* StateTextRenderer;
+
+	UPROPERTY(EditAnywhere)
+	UTextRenderComponent* MsgTextRenderer;
+
+	UPROPERTY(EditAnywhere)
+	UTextRenderComponent* AttackTextRenderer;
+
+	UPROPERTY(EditAnywhere)
+	AActor* MainCam;
 };
