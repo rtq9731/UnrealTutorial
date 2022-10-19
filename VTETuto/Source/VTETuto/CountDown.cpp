@@ -15,7 +15,7 @@ ACountDown::ACountDown()
 	
 	RootComponent = TextRenderer;
 
-	CountDownTime = 3.0f;
+	CountdownTime = 3.0f;
 
 }
 
@@ -23,7 +23,10 @@ ACountDown::ACountDown()
 void ACountDown::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	UpdateTimerDisplay();
+
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &ACountDown::AdvanceTimer, 1.0f, true);
 }
 
 // Called every frame
@@ -32,8 +35,25 @@ void ACountDown::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ACountDown::AdvanceTimer()
+{
+	--CountdownTime;
+	UpdateTimerDisplay();
+
+	if (CountdownTime < 0)
+	{
+		GetWorldTimerManager().ClearTimer(TimerHandle);
+		CountdownHasFinished();
+	}
+}
+
+void ACountDown::CountdownHasFinished()
+{
+	TextRenderer->SetText("Hello Timer!");
+}
+
 void ACountDown::UpdateTimerDisplay()
 {
-	TextRenderer->
+	TextRenderer->SetText(FString::FromInt(FMath::Max(CountdownTime, 0)));
 }
 

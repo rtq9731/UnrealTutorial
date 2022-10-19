@@ -23,8 +23,16 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	int32 CountDownTime;
-	UTextRenderComponent* TextRenderer;
+	void AdvanceTimer();
+	void CountdownHasFinished();
 	void UpdateTimerDisplay();
+
+public:
+
+	UPROPERTY(EditAnywhere)
+	int32 CountdownTime;
+
+	UTextRenderComponent* TextRenderer;
+
+	FTimerHandle TimerHandle;
 };
