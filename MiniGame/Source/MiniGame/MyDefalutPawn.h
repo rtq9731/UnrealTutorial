@@ -23,6 +23,7 @@ protected:
 	void CheckKey();
 	void OnTimerFinished();
 	void MakeRandAttackKey();
+	void OnGameOver();
 
 	UFUNCTION()
 		void OnClickRight();
@@ -30,7 +31,6 @@ protected:
 		void OnClickLeft();
 	UFUNCTION()
 		void OnClickStart();
-
 	UFUNCTION()
 		void OnTimerTick();
 
@@ -42,7 +42,11 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere)
-		int DealTime = 3;
+	int DealTime = 3;
+	UPROPERTY(VisibleAnywhere)
+	int DealCounter = 0;
+
+	int MaxCounter = 0;
 
 	float DealTimer = 0.0f;
 

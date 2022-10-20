@@ -26,18 +26,18 @@ protected:
 
 	UPROPERTY(EditAnywhere) AActor* AnimInstMesh;
 	UPROPERTY(EditAnywhere) AActor* MainCam;
+
 	UPROPERTY(EditAnywhere) UTextRenderComponent* StateTextRenderer;
 	UPROPERTY(EditAnywhere) UTextRenderComponent* MsgTextRenderer;
 	UPROPERTY(EditAnywhere) UTextRenderComponent* AttackTextRenderer;
+	UPROPERTY(EditAnywhere) UTextRenderComponent* InfoTextRenderer;
 
 public:
-
-	void SetUpStartUI();
+	void InitUI();
+	void SetFinishedUI(int dealCounter, int maxDealCounter);
 	void SetUpGameUI(float timer);
-
-	void SetStateText(FString str);
-	void SetAttackText(FString str);
-	void SetMsgText(FString str);
+	void UpdateGameUI(float timer);
+	void UpdateGameUI(float timer, FString key);
 
 	void SetbIsAttack(bool value);
 	void SetbIsFailed(bool value);

@@ -21,6 +21,10 @@ ATextManagerActor::ATextManagerActor()
 	AttackTextRenderer = CreateDefaultSubobject<UTextRenderComponent>(TEXT("AttackTextRenderer"));
 	AttackTextRenderer->SetHorizontalAlignment(EHTA_Center);
 	AttackTextRenderer->SetWorldSize(128.0f);
+
+	InfoTextRenderer = CreateDefaultSubobject<UTextRenderComponent>(TEXT("InfoTextRenderer"));
+	InfoTextRenderer->SetHorizontalAlignment(EHTA_Center);
+	InfoTextRenderer->SetWorldSize(48.0f);
 }
 
 // Called when the game starts or when spawned
@@ -44,38 +48,54 @@ void ATextManagerActor::Tick(float DeltaTime)
 }
 
 
-void ATextManagerActor::SetUpStartUI()
+void ATextManagerActor::InitUI()
 {
+	StateTextRenderer->SetText("Ready!");
+	MsgTextRenderer->SetText("Press S to start");
+	AttackTextRenderer->SetVisibility(false);
+	InfoTextRenderer->SetVisibility(false);
+}
+
+void ATextManagerActor::SetFinishedUI(int dealCounter, int maxDealCounter)
+{
+	StateTextRenderer->SetText("Ready");
+	MsgTextRenderer->SetText("Press S to restart");
+	InfoTextRenderer->SetText(FString("Last Damage : " + FString::FromInt(dealCounter) + ", Max Damage : " + FString::FromInt(maxDealCounter)));
+
+	InfoTextRenderer->SetVisibility(true);
 	AttackTextRenderer->SetVisibility(false);
 }
 
 void ATextManagerActor::SetUpGameUI(float timer)
 {
+	StateTextRenderer->SetText("Attack!!");
 	AttackTextRenderer->SetVisibility(true);
 	MsgTextRenderer->SetText(FString::SanitizeFloat(FMath::Max(timer, 0.0f)));
 }
 
-void ATextManagerActor::SetStateText(FString str)
+void ATextManagerActor::UpdateGameUI(float timer)
 {
-	StateTextRenderer->SetText(str);
+	MsgTextRenderer->SetText(FString::SanitizeFloat(FMath::Max(timer, 0.0f)));
 }
 
-void ATextManagerActor::SetAttackText(FString str)
+void ATextManagerActor::UpdateGameUI(float timer, FString key)
 {
-	AttackTextRenderer->SetText(str);
-}
-
-void ATextManagerActor::SetMsgText(FString str)
-{
-	MsgTextRenderer->SetText(str);
+	MsgTextRenderer->SetText(FString::SanitizeFloat(FMath::Max(timer, 0.0f)));
+	AttackTextRenderer->SetText(key);
 }
 
 void ATextManagerActor::SetbIsAttack(bool value)
 {
+	if(value)
+	StateTextRenderer->SetText("Attack!!");
+
 	AnimInst->bIsAttack = value;
 }
 
 void ATextManagerActor::SetbIsFailed(bool value)
 {
+	if (value)
+	MsgTextRenderer->SetText("Wrong!!");
+
 	AnimInst->bIsFailed = value;
 }

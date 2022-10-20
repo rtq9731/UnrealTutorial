@@ -28,11 +28,9 @@ void AMyDefalutPawn::BeginPlay()
 		TextManager = Cast<ATextManagerActor>(FireEffectActor);
 		if (TextManager)
 		{
-			TextManager->SetUpStartUI();
+			TextManager->InitUI();
 		}
 	}
-
-	TextManager->SetUpStartUI();
 
 	DealTimer = DealTime;
 }
@@ -57,7 +55,7 @@ void AMyDefalutPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void AMyDefalutPawn::OnTimerTick()
 {
 	DealTimer -= 0.01f;
-	TextManager->SetMsgText(FString::SanitizeFloat(FMath::Max(DealTimer, 0.0f)));
+	TextManager->UpdateGameUI(DealTimer);
 	if (DealTimer <= 0.0f)
 	{
 		GetWorldTimerManager().ClearTimer(TimerHandle);
@@ -67,15 +65,15 @@ void AMyDefalutPawn::OnTimerTick()
 
 void AMyDefalutPawn::OnTimerFinished()
 {
-	bIsOnGame = false;
-	TextManager->SetStateText(TEXT("Ready!"));
-	DealTimer = DealTime;
+	OnGameOver();
 }
 
 
 void AMyDefalutPawn::MakeRandAttackKey()
 {
-	if (rand() % 2 == 0)
+	int randNum = rand();
+
+	if (randNum % 2 == 0)
 	{
 		CurKey = "A";
 	}
@@ -84,7 +82,23 @@ void AMyDefalutPawn::MakeRandAttackKey()
 		CurKey = "D";
 	}
 
-	TextManager->SetAttackText(CurKey);
+	TextManager->UpdateGameUI(DealTimer, CurKey);
+}
+
+void AMyDefalutPawn::OnGameOver()
+{
+	TextManager->SetbIsAttack(false);
+	TextManager->SetbIsFailed(false);
+
+	bIsOnGame = false;
+	DealTimer = DealTime;
+
+	if (MaxCounter <= DealCounter)
+	{
+		MaxCounter = DealCounter;
+	}
+
+	TextManager->SetFinishedUI(DealCounter, MaxCounter);
 }
 
 void AMyDefalutPawn::CheckKey()
@@ -94,8 +108,19 @@ void AMyDefalutPawn::CheckKey()
 
 	const bool bIsAttack = CurInputKey == CurKey;
 
-	TextManager->SetbIsAttack(bIsAttack);
-	TextManager->SetbIsAttack(!bIsAttack);
+
+	if (bIsAttack)
+	{
+		TextManager->SetbIsFailed(false);
+		TextManager->SetbIsAttack(true);
+		MakeRandAttackKey();
+		DealCounter++;
+	}
+	else
+	{
+		TextManager->SetbIsFailed(true);
+		TextManager->SetbIsAttack(false);
+	}
 }
 
 void AMyDefalutPawn::OnClickRight()
@@ -118,6 +143,13 @@ void AMyDefalutPawn::OnClickStart()
 	bIsOnGame = true;
 
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &AMyDefalutPawn::OnTimerTick, 0.01f, true);
+
+	if (MaxCounter <= DealCounter)
+	{
+		MaxCounter = DealCounter;
+	}
+	DealCounter = 0;
+
 	TextManager->SetUpGameUI(0.0f);
 
 	MakeRandAttackKey();
